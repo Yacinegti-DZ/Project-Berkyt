@@ -1,0 +1,4 @@
+id=fingerprint
+name=Fingerprint sensor patches
+author=3q5i, salvogiangri
+description=Adapts fingerprint sensor config from source to target device.
