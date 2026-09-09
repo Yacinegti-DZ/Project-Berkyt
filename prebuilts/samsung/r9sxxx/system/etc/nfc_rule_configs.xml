@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='utf-8' standalone='yes' ?>
+<configurations>
+	<version>
+		<major>1</major>
+		<minor>0</minor>
+	</version>
+	<rules>
+	    <rule id="1" listen_tech="0x07" route_aid="SIM" route_iso_dep="SIM" route_tech="SIM" route_system_code="eSE" description="ssse_abf" />
+	    <rule id="2" listen_tech="0x05" route_aid="SIM" route_iso_dep="SIM" route_tech="SIM" route_system_code="eSE" description="ssse_af"/>
+	    <rule id="3" listen_tech="0x07" route_aid="DH" route_iso_dep="DH" route_tech="eSE" route_system_code="eSE" description="ddee_abf" />
+	    <rule id="4" listen_tech="0x07" route_aid="eSE" route_iso_dep="eSE" route_tech="eSE" route_system_code="eSE" description="eeee_abf" />
+	</rules>
+	<regions>
+	    <region area="1" country_iso_code="00" local_mcc="" rule_id="1"/>
+	    <region area="2" country_iso_code="US" local_mcc="" rule_id="3"/>
+	    <region area="2" country_iso_code="CA" local_mcc="" rule_id="3"/>
+	    <region area="3" country_iso_code="KR" local_mcc="" rule_id="2"/>
+	    <region area="4" country_iso_code="JP" local_mcc="" rule_id="4"/>
+	    <region area="5" country_iso_code="CN" local_mcc="" rule_id="1"/>
+	    <region area="5" country_iso_code="HK" local_mcc="" rule_id="1"/>
+	    <region area="5" country_iso_code="TW" local_mcc="" rule_id="1"/>
+		<region area="5" country_iso_code="MO" local_mcc="" rule_id="1"/>
+	</regions>
+</configurations>

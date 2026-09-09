@@ -1,0 +1,52 @@
+on boot
+
+on init
+    setprop ro.boot.product.hardware.sku ${ro.boot.hardware.sku}
+    setprop ro.nfc.info.antpos.X ${ro.vendor.nfc.info.antposX}
+    setprop ro.nfc.info.antpos.Y ${ro.vendor.nfc.info.antposY}
+    setprop ro.nfc.info.antpos.device_width ${ro.vendor.nfc.info.deviceWidth}
+    setprop ro.nfc.info.antpos.device_height ${ro.vendor.nfc.info.deviceHeight}
+    setprop ro.nfc.info.antpos.device_foldable ${ro.vendor.nfc.info.deviceFoldable}
+
+# overlay properties if true
+on property:ro.vendor.nfc.overlay.observemode=true
+    setprop ro.nfc.observe_mode_supported true
+on property:ro.vendor.nfc.overlay.getcaps=true
+    setprop ro.nfc.get_caps_supported true
+on property:ro.vendor.nfc.support.euicc=true
+    setprop ro.nfc.euicc_supported true
+
+# initialize properties
+on property:ro.nfc.observe_mode_supported=
+    setprop ro.nfc.observe_mode_supported false
+on property:ro.nfc.get_caps_supported=
+    setprop ro.nfc.get_caps_supported false
+on property:ro.vendor.nfc.support.euicc=
+    setprop ro.nfc.euicc_supported false
+
+on early-init && property:ro.boot.debug_level=0x4f4c    # low
+    setprop persist.nfc.debug_enabled false
+    setprop persist.nfc.vendor_debug_enabled false
+
+on early-init && property:ro.boot.debug_level=0x494d    # mid
+    setprop persist.nfc.debug_enabled true
+
+on early-init && property:ro.boot.debug_level=0x4948    # high
+    setprop persist.nfc.debug_enabled true
+    setprop persist.nfc.vendor_debug_enabled true
+
+on early-init && property:ro.product_ship=false         # noship
+    setprop persist.nfc.debug_enabled true
+    setprop persist.nfc.vendor_debug_enabled true
+    setprop log.tag.libnfc_nci VERBOSE
+
+on post-fs-data
+# NFC: create data/nfc for nv storage
+    mkdir /data/nfc 0770 nfc nfc
+    mkdir /data/nfc/param 0770 nfc nfc
+
+# NFC KEY
+    mkdir /data/nfc_log 0750 nfc system
+    copy /system/etc/nfc_key /data/nfc/Key
+    chmod 660 /data/nfc/Key
+    chown nfc nfc /data/nfc/Key
