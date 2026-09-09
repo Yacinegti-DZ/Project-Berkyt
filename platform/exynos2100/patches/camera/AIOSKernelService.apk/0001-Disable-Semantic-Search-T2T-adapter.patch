@@ -1,0 +1,24 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: devcore94 <devcore94@users.noreply.github.com>
+Date: Sun, 10 May 2026 20:05:00 +0200
+Subject: [PATCH] Disable Semantic Search T2T adapter
+
+---
+ smali/com/samsung/android/aioskernelservice/ConstructAdapter.smali | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/smali/com/samsung/android/aioskernelservice/ConstructAdapter.smali b/smali/com/samsung/android/aioskernelservice/ConstructAdapter.smali
+index 0000000..0000000 100644
+--- a/smali/com/samsung/android/aioskernelservice/ConstructAdapter.smali
++++ b/smali/com/samsung/android/aioskernelservice/ConstructAdapter.smali
+@@ -3019,7 +3019,7 @@
+     goto/16 :goto_1
+ 
+     :sswitch_5
+-    const-string p0, "SEMANTIC_SEARCH_T2T"
++    const-string p0, "SEMANTIC_SEARCH_DISABLED"
+ 
+     invoke-virtual {p1, p0}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+ 
+-- 
+2.49.0
