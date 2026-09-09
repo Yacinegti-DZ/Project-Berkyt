@@ -27,6 +27,38 @@ while IFS= read -r f; do
         LOG_STEP_IN "- Applying target product overlay"
         EVAL "rm -rf \"$APKTOOL_DIR/product/overlay/${f//$SOURCE_PRODUCT_NAME/$TARGET_PRODUCT_NAME}/res\""
         EVAL "cp -a \"$SRC_DIR/target/$TARGET_CODENAME/overlay\" \"$APKTOOL_DIR/product/overlay/${f//$SOURCE_PRODUCT_NAME/$TARGET_PRODUCT_NAME}/res\""
+        FRAMEWORK_RRO_ARRAYS="$APKTOOL_DIR/product/overlay/${f//$SOURCE_PRODUCT_NAME/$TARGET_PRODUCT_NAME}/res/values/arrays.xml"
+        if ! grep -q -w "config_screenBrightnessNitsPrivacy" "$FRAMEWORK_RRO_ARRAYS" 2> /dev/null && \
+                grep -q -w "config_screenBrightnessNits" "$FRAMEWORK_RRO_ARRAYS" 2> /dev/null; then
+            LOG "- Adding privacy display brightness nits fallback"
+            TMP_PRIVACY_NITS="$(mktemp)"
+            awk '
+                /<array name="config_screenBrightnessNits">/ {
+                    capture = 1
+                    sub("config_screenBrightnessNits", "config_screenBrightnessNitsPrivacy")
+                }
+                capture {
+                    print
+                    if ($0 ~ /<\/array>/) {
+                        exit
+                    }
+                }
+            ' "$FRAMEWORK_RRO_ARRAYS" > "$TMP_PRIVACY_NITS"
+            awk -v blockfile="$TMP_PRIVACY_NITS" '
+                BEGIN {
+                    while ((getline line < blockfile) > 0) {
+                        block = block line ORS
+                    }
+                }
+                /<\/resources>/ {
+                    printf "%s", block
+                }
+                { print }
+            ' "$FRAMEWORK_RRO_ARRAYS" > "$FRAMEWORK_RRO_ARRAYS.tmp"
+            EVAL "mv -f \"$FRAMEWORK_RRO_ARRAYS.tmp\" \"$FRAMEWORK_RRO_ARRAYS\""
+            EVAL "rm -f \"$TMP_PRIVACY_NITS\""
+        fi
+        unset FRAMEWORK_RRO_ARRAYS TMP_PRIVACY_NITS
         if [ "$(GET_FLOATING_FEATURE_CONFIG "SEC_FLOATING_FEATURE_LCD_SUPPORT_EXTRA_BRIGHTNESS")" ] && \
                 ! grep -q -w "config_Extra_Brightness_Display_Solution_Brightness_Value" "$SRC_DIR/target/$TARGET_CODENAME/overlay/values/arrays.xml" 2> /dev/null; then
             _LOG "SEC_FLOATING_FEATURE_LCD_SUPPORT_EXTRA_BRIGHTNESS is set but \"config_Extra_Brightness_Display_Solution_Brightness_Value\" is missing in arrays.xml"

@@ -4,32 +4,30 @@ Date: Mon, 8 Sep 2025 23:54:42 +0200
 Subject: [PATCH] Disable HDR Settings
 
 ---
- .../providers/settings/SecUpgradeController.smali    | 12 ------------
- 1 file changed, 12 deletions(-)
+ .../providers/settings/SecUpgradeController.smali     | 11 -----------
+ 1 file changed, 11 deletions(-)
 
 diff --git a/smali/com/android/providers/settings/SecUpgradeController.smali b/smali/com/android/providers/settings/SecUpgradeController.smali
-index 0265528..afefaea 100644
+index 6ffff1c..e0f3b9f 100644
 --- a/smali/com/android/providers/settings/SecUpgradeController.smali
 +++ b/smali/com/android/providers/settings/SecUpgradeController.smali
-@@ -1153,18 +1153,6 @@
-     invoke-virtual/range {v2 .. v7}, Lcom/android/providers/settings/SettingsState;->insertSettingLocked(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ZLjava/lang/String;)Z
+@@ -1015,17 +1015,6 @@
+     invoke-virtual/range {v3 .. v8}, Lcom/android/providers/settings/SettingsState;->insertSettingLocked(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ZLjava/lang/String;)Z
  
      :goto_9
--    const/4 v6, 0x1
+-    const/4 v7, 0x1
 -
--    const-string v7, "android"
+-    const-string v8, "android"
 -
--    const-string v3, "hdr_effect"
+-    const-string v4, "hdr_effect"
 -
--    const-string v4, "0"
+-    const-string v5, "0"
 -
--    const/4 v5, 0x0
+-    const/4 v6, 0x0
 -
--    invoke-virtual/range {v2 .. v7}, Lcom/android/providers/settings/SettingsState;->insertSettingLocked(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ZLjava/lang/String;)Z
--
+-    invoke-virtual/range {v3 .. v8}, Lcom/android/providers/settings/SettingsState;->insertSettingLocked(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ZLjava/lang/String;)Z
+ 
      invoke-static {}, Landroid/os/FactoryTest;->isFactoryBinary()Z
  
-     move-result v1
 -- 
-2.51.0
-
+2.43.0

@@ -1,0 +1,20 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: local
+Date: Thu, 7 May 2026 12:40:00 +0200
+Subject: [PATCH] Set build mainline API level
+
+Generated from product_feature/customize.sh for the One UI 8.5 t2s target.
+
+diff --git a/smali/com/sec/esecomm/EsecommAdapter.smali b/smali/com/sec/esecomm/EsecommAdapter.smali
+index c11b4a3..2fae949 100644
+--- a/smali/com/sec/esecomm/EsecommAdapter.smali
++++ b/smali/com/sec/esecomm/EsecommAdapter.smali
+@@ -47,7 +47,7 @@
+ 
+     invoke-static {v0}, Ljava/lang/System;->loadLibrary(Ljava/lang/String;)V
+ 
+-    const-string v0, "36"
++    const-string v0, "30"
+ 
+     invoke-static {v0}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
+ 

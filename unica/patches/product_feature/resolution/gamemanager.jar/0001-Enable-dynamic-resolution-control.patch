@@ -1,17 +1,17 @@
-From 14b5d1a47050e1475321ecdf8c54a04776ff4bc4 Mon Sep 17 00:00:00 2001
+From ba0f1150a70fd2a24896b7f97a9fc7314acc2625 Mon Sep 17 00:00:00 2001
 From: Salvo Giangreco <giangrecosalvo9@gmail.com>
 Date: Mon, 6 Oct 2025 21:21:15 +0200
 Subject: [PATCH] Enable dynamic resolution control
 
 ---
- .../android/game/GameManagerService$DisplayListener.smali     | 4 +---
+ .../samsung/android/game/display/GameDisplayListener.smali    | 4 +---
  1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/smali/com/samsung/android/game/GameManagerService$DisplayListener.smali b/smali/com/samsung/android/game/GameManagerService$DisplayListener.smali
-index 4cb4380..5d041b4 100644
---- a/smali/com/samsung/android/game/GameManagerService$DisplayListener.smali
-+++ b/smali/com/samsung/android/game/GameManagerService$DisplayListener.smali
-@@ -59,9 +59,7 @@
+diff --git a/smali/com/samsung/android/game/display/GameDisplayListener.smali b/smali/com/samsung/android/game/display/GameDisplayListener.smali
+index dee84c6..e672bd3 100644
+--- a/smali/com/samsung/android/game/display/GameDisplayListener.smali
++++ b/smali/com/samsung/android/game/display/GameDisplayListener.smali
+@@ -44,9 +44,7 @@
  
      const-string v0, "WQHD,FHD,HD"
  
@@ -23,5 +23,5 @@ index 4cb4380..5d041b4 100644
      move-result v0
  
 -- 
-2.51.0
+2.43.0
 

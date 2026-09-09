@@ -1,0 +1,75 @@
+From ae3734e064811df1974114ba164911e621a77c85 Mon Sep 17 00:00:00 2001
+From: Salvo Giangreco <giangrecosalvo9@gmail.com>
+Date: Sun, 5 Oct 2025 22:46:03 +0200
+Subject: [PATCH] Disable SAK in DarManagerService
+
+---
+diff --git a/smali/com/android/server/knox/dar/DarManagerService.smali b/smali/com/android/server/knox/dar/DarManagerService.smali
+index c2f962a..2850072 100644
+--- a/smali/com/android/server/knox/dar/DarManagerService.smali
++++ b/smali/com/android/server/knox/dar/DarManagerService.smali
+@@ -570,62 +570,9 @@
+ .end method
+ 
+ .method public final checkDeviceIntegrity([Ljava/security/cert/Certificate;)Z
+-    .locals 3
+-
+-    const/4 v0, 0x0
+-
+-    aget-object p1, p1, v0
+-
+-    check-cast p1, Ljava/security/cert/X509Certificate;
+-
+-    :try_start_0
+-    new-instance v1, Lcom/android/server/knox/dar/AttestedCertParser;
+-
+-    invoke-direct {v1, p1}, Lcom/android/server/knox/dar/AttestedCertParser;-><init>(Ljava/security/cert/X509Certificate;)V
+-
+-    iget-object p1, v1, Lcom/android/server/knox/dar/AttestedCertParser;->mKnoxIngetrity:Lcom/android/server/knox/dar/IntegrityStatus;
+-
+-    const/4 v1, 0x1
+-
+-    if-eqz p1, :cond_0
+-
+-    iget v2, p1, Lcom/android/server/knox/dar/IntegrityStatus;->mWarranty:I
+-
+-    if-nez v2, :cond_0
+-
+-    iget p1, p1, Lcom/android/server/knox/dar/IntegrityStatus;->mTrustBoot:I
+-
+-    if-nez p1, :cond_0
+-
+-    return v1
+-
+-    :catch_0
+-    move-exception p0
+-
+-    goto :goto_0
+-
+-    :cond_0
+-    invoke-virtual {p0}, Lcom/android/server/knox/dar/DarManagerService;->isEmTokenAllowed()Z
+-
+-    move-result p0
+-
+-    if-eqz p0, :cond_1
+-
+-    const-string p0, "DarManagerService"
+-
+-    const-string p1, "Failed in device integrity check. But, EM Token is allowed. Continue - "
+-
+-    invoke-static {p0, p1}, Landroid/util/Log;->d(Ljava/lang/String;Ljava/lang/String;)I
+-    :try_end_0
+-    .catch Ljava/security/cert/CertificateParsingException; {:try_start_0 .. :try_end_0} :catch_0
+-
+-    return v1
+-
+-    :cond_1
+-    return v0
++    .locals 1
+ 
+-    :goto_0
+-    invoke-virtual {p0}, Ljava/security/cert/CertificateParsingException;->printStackTrace()V
++    const/4 v0, 0x1
+ 
+     return v0
+ .end method

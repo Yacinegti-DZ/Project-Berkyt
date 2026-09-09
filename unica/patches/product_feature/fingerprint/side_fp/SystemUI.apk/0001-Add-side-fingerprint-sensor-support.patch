@@ -3,7 +3,6 @@ From: Salvo Giangreco <giangrecosalvo9@gmail.com>
 Date: Mon, 13 Oct 2025 14:44:50 +0200
 Subject: [PATCH] Add side fingerprint sensor support
 
-UN1CA: this patch is not complete! Please check unica/patches/product_feature/customize.sh for more info.
 ---
  .../DualDarInnerLockScreenController.smali    |  126 +-
  .../KeyguardArrowViewController.smali         |   57 +-

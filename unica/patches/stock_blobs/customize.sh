@@ -10,6 +10,10 @@ MATCH_TARGET_FEATURES()
     TARGET_FEATURES="$(sort <<< "$TARGET_FEATURES")"
 
     for f in $SOURCE_FEATURES; do
+        if [[ "$f" == "com.sec.feature.spen_usp_level70.xml" ]] && \
+                [ -d "$FW_DIR/$SOURCE_FIRMWARE_PATH/system/system/media/audio/pensounds" ]; then
+            continue
+        fi
         if ! grep -q "$f" <<< "$TARGET_FEATURES"; then
             DELETE_FROM_WORK_DIR "system" "system/etc/permissions/$f"
         fi
@@ -23,6 +27,7 @@ MATCH_TARGET_FEATURES()
 # ]
 
 TARGET_FIRMWARE_PATH="$(cut -d "/" -f 1 -s <<< "$TARGET_FIRMWARE")_$(cut -d "/" -f 2 -s <<< "$TARGET_FIRMWARE")"
+SOURCE_FIRMWARE_PATH="$(cut -d "/" -f 1 -s <<< "$SOURCE_FIRMWARE")_$(cut -d "/" -f 2 -s <<< "$SOURCE_FIRMWARE")"
 
 MATCH_TARGET_FEATURES
 
@@ -67,6 +72,24 @@ else
     fi
 fi
 
+if [ -d "$FW_DIR/$TARGET_FIRMWARE_PATH/system/system/saiv" ]; then
+    DELETE_FROM_WORK_DIR "system" "system/saiv"
+    ADD_TO_WORK_DIR "$TARGET_FIRMWARE" "system" "system/saiv" 0 0 755 "u:object_r:system_file:s0"
+fi
+if [[ "$(GET_FLOATING_FEATURE_CONFIG "SEC_FLOATING_FEATURE_CAMERA_DOCUMENTSCAN_SOLUTIONS")" == *"AI_DEWARPING"* ]] && \
+        [ -d "$FW_DIR/$SOURCE_FIRMWARE_PATH/system/system/saiv/image_understanding/db/smartscan_rectifier" ]; then
+    ADD_TO_WORK_DIR "$SOURCE_FIRMWARE" \
+        "system" "system/saiv/image_understanding/db/smartscan_rectifier" 0 0 755 "u:object_r:system_file:s0"
+elif [ -d "$WORK_DIR/system/system/saiv/image_understanding/db/smartscan_rectifier" ]; then
+    DELETE_FROM_WORK_DIR "system" "system/saiv/image_understanding/db/smartscan_rectifier"
+fi
+if [ -d "$FW_DIR/$SOURCE_FIRMWARE_PATH/system/system/saiv/textrecognition" ]; then
+    DELETE_FROM_WORK_DIR "system" "system/saiv/textrecognition"
+    ADD_TO_WORK_DIR "$SOURCE_FIRMWARE" "system" "system/saiv/textrecognition" 0 0 755 "u:object_r:system_file:s0"
+elif [ -d "$WORK_DIR/system/system/saiv/textrecognition" ]; then
+    DELETE_FROM_WORK_DIR "system" "system/saiv/textrecognition"
+fi
+
 if [ -f "$FW_DIR/$TARGET_FIRMWARE_PATH/system/system/usr/share/alsa/alsa.conf" ]; then
     ADD_TO_WORK_DIR "$TARGET_FIRMWARE" "system" "system/usr/share/alsa/alsa.conf" 0 0 644 "u:object_r:system_file:s0"
 else
@@ -75,5 +98,4 @@ else
     fi
 fi
 
-unset TARGET_FIRMWARE_PATH
 unset -f MATCH_TARGET_FEATURES

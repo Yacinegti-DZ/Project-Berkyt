@@ -68,7 +68,7 @@ ENCODE_MP4()
 }
 # ]
 
-ADD_TO_WORK_DIR "pa2qxxx" "system" \
+ADD_TO_WORK_DIR "m2sxxx" "system" \
     "system/priv-app/wallpaper-res/wallpaper-res.apk" 0 0 644 "u:object_r:system_file:s0"
 DECODE_APK "system" "system/priv-app/wallpaper-res/wallpaper-res.apk"
 for f in "$APKTOOL_DIR/system/priv-app/wallpaper-res/wallpaper-res.apk/res/drawable-nodpi/dex_wallpaper_"*.webp; do
@@ -80,13 +80,23 @@ done
 for f in "$APKTOOL_DIR/system/priv-app/wallpaper-res/wallpaper-res.apk/res/raw/video_"*.mp4; do
     ENCODE_MP4 "$f"
 done
-LOG "- Downloading latest Samsung Wallpaper app"
-DOWNLOAD_FILE "$(GET_GALAXY_STORE_DOWNLOAD_URL "000008552712")" \
-    "$WORK_DIR/system/system/priv-app/SpriteWallpaper/SpriteWallpaper.apk"
-APPLY_PATCH "system" "system/priv-app/SpriteWallpaper/SpriteWallpaper.apk" \
-    "$MODPATH/SpriteWallpaper.apk/0001-Force-Paradigm-wallpapers-motion-animator.patch"
-APPLY_PATCH "system" "system/priv-app/SpriteWallpaper/SpriteWallpaper.apk" \
-    "$MODPATH/SpriteWallpaper.apk/0002-Adjust-motion-animator-for-60fps-video-files.patch"
+ADD_TO_WORK_DIR "m2sxxx" "system" \
+    "system/priv-app/SpriteWallpaper/SpriteWallpaper.apk" 0 0 644 "u:object_r:system_file:s0"
+LOG "- Halving wallpaper transition timings in SpriteWallpaper"
+DECODE_APK "system" "system/priv-app/SpriteWallpaper/SpriteWallpaper.apk"
+local _SW="$APKTOOL_DIR/system/priv-app/SpriteWallpaper/SpriteWallpaper.apk"
+local _SF
+_SF="$(grep -rl 'AOD AOD 0' "$_SW/smali"* | head -n 1)"
+if [ "$_SF" ]; then
+    # Pre-SDK35 variant (720/2952)
+    sed -i 's/AOD LOCK 0 720 1800/AOD LOCK 0 360 900/g;s/AOD HOME 0 2952 2500/AOD HOME 0 1476 2500/g;s/LOCK HOME 720 2952 1200/LOCK HOME 360 1476 1200/g;s/LOCK TOUCH 720 1800 1000/LOCK TOUCH 360 900 1000/g' "$_SF"
+    # SDK35+ variant (700/2040)
+    sed -i 's/AOD LOCK 0 700 1000/AOD LOCK 0 350 1000/g;s/AOD HOME 0 2040 2500/AOD HOME 0 1020 2500/g;s/LOCK HOME 700 2040 1500/LOCK HOME 350 1020 1500/g;s/LOCK TOUCH 700 1750 1500/LOCK TOUCH 350 875 1500/g' "$_SF"
+    # S26+ directional variant (270/719/1169/1619)
+    sed -i 's/AOD LOCK 0 269 1500/AOD LOCK 0 538 1500/g;s/AOD HOME 0 719 3000/AOD HOME 0 1438 3000/g;s/LOCK HOME_LEFT 270 719/LOCK HOME_LEFT 540 1438/g;s/LOCK HOME_UP 720 1169/LOCK HOME_UP 1440 2338/g;s/LOCK HOME_RIGHT 1170 1619/LOCK HOME_RIGHT 2340 3238/g;s/LOCK TOUCH_LEFT 270 519/LOCK TOUCH_LEFT 540 1038/g;s/LOCK TOUCH_UP 720 969/LOCK TOUCH_UP 1440 1938/g;s/LOCK TOUCH_RIGHT 1170 1419/LOCK TOUCH_RIGHT 2340 2838/g' "$_SF"
+else
+    LOGW "SpriteWallpaper timing string not found, skipping"
+fi
 APPLY_PATCH "system" "system/priv-app/wallpaper-res/wallpaper-res.apk" \
     "$MODPATH/wallpaper-res.apk/0001-Adjust-metadata-for-60fps-video-files.patch"
 
