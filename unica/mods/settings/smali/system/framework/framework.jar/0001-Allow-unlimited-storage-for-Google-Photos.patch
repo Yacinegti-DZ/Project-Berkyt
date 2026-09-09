@@ -1,17 +1,17 @@
-From c004d8bedb53106da4faf1e31087e9d0f098de9f Mon Sep 17 00:00:00 2001
-From: Salvo Giangreco <giangrecosalvo9@gmail.com>
-Date: Wed, 15 Oct 2025 00:46:38 +0200
-Subject: [PATCH] Allow unlimited storage for Google Photos
+From 3dfd1085df049aa621b75a2163cdac2acd845de9 Mon Sep 17 00:00:00 2001
+From: Devcore94 <devcore94@users.noreply.github.com>
+Date: Sat, 22 Aug 2026 07:33:04 +0200
+Subject: [PATCH] Allow unlimited storage for Google Photos on QPR2
 
 ---
- .../app/ApplicationPackageManager.smali       | 75 ++++++++++++++++---
- 1 file changed, 66 insertions(+), 9 deletions(-)
+ .../app/ApplicationPackageManager.smali       | 74 +++++++++++++++++--
+ 1 file changed, 66 insertions(+), 8 deletions(-)
 
 diff --git a/smali/android/app/ApplicationPackageManager.smali b/smali/android/app/ApplicationPackageManager.smali
-index b3b5a4dd..57833ded 100644
+index 49fc122..fabda9b 100644
 --- a/smali/android/app/ApplicationPackageManager.smali
 +++ b/smali/android/app/ApplicationPackageManager.smali
-@@ -30,6 +30,8 @@
+@@ -33,6 +33,8 @@
  
  .field private static final greylist-max-o DEFAULT_EPHEMERAL_COOKIE_MAX_SIZE_BYTES:I = 0x4000
  
@@ -20,16 +20,7 @@ index b3b5a4dd..57833ded 100644
  .field private static final blacklist HAS_SYSTEM_FEATURE_API:Ljava/lang/String; = "has_system_feature"
  
  .field private static final blacklist LIVE_ICON_SUFFIX:Ljava/lang/String; = ".LiveIconLoader"
-@@ -209,7 +211,7 @@
- .end method
- 
- .method static constructor blacklist <clinit>()V
--    .locals 5
-+    .locals 7
- 
-     new-instance v0, Landroid/util/ArrayMap;
- 
-@@ -255,6 +257,22 @@
+@@ -270,6 +272,22 @@
  
      sput-object v0, Landroid/app/ApplicationPackageManager;->mHasSystemFeatureCache:Landroid/app/PropertyInvalidatedCache;
  
@@ -52,7 +43,7 @@ index b3b5a4dd..57833ded 100644
      new-instance v0, Landroid/app/ApplicationPackageManager$3;
  
      new-instance v1, Landroid/app/PropertyInvalidatedCache$Args;
-@@ -10449,26 +10467,65 @@
+@@ -10564,26 +10582,66 @@
  .end method
  
  .method public whitelist hasSystemFeature(Ljava/lang/String;I)Z
@@ -79,11 +70,11 @@ index b3b5a4dd..57833ded 100644
 +    const-string v1, "com.google.android.apps.photos"
 +
 +    invoke-virtual {v0, v1}, Ljava/lang/Object;->equals(Ljava/lang/Object;)Z
- 
-     move-result v0
- 
-     if-eqz v0, :cond_0
- 
++
++    move-result v0
++
++    if-eqz v0, :cond_0
++
 +    sget-object v0, Landroid/app/ApplicationPackageManager;->FEATURES_NEXUS:[Ljava/lang/String;
 +
 +    invoke-static {v0}, Ljava/util/Arrays;->asList([Ljava/lang/Object;)Ljava/util/List;
@@ -91,6 +82,11 @@ index b3b5a4dd..57833ded 100644
 +    move-result-object v0
 +
 +    invoke-interface {v0, p1}, Ljava/util/List;->contains(Ljava/lang/Object;)Z
+-
+-    move-result v0
+-
+-    if-eqz v0, :cond_0
+-
 +
 +    move-result v0
 +
@@ -99,6 +95,7 @@ index b3b5a4dd..57833ded 100644
 +    return v2
 +
 +    :cond_0
++
 +    invoke-static {p1}, Lcom/samsung/android/core/pm/mm/MaintenanceModeUtils;->isMaintenanceModeFeature(Ljava/lang/String;)Z
 +
 +    move-result v0
@@ -122,7 +119,7 @@ index b3b5a4dd..57833ded 100644
  
      invoke-virtual {v0}, Ljava/lang/Boolean;->booleanValue()Z
  
-@@ -10476,10 +10533,10 @@
+@@ -10591,10 +10649,10 @@
  
      return p0
  
@@ -135,7 +132,7 @@ index b3b5a4dd..57833ded 100644
  
      invoke-static {}, Landroid/content/pm/SystemFeaturesCache;->getInstance()Landroid/content/pm/SystemFeaturesCache;
  
-@@ -10489,7 +10546,7 @@
+@@ -10604,7 +10662,7 @@
  
      move-result-object p0
  
@@ -144,7 +141,7 @@ index b3b5a4dd..57833ded 100644
  
      invoke-virtual {p0}, Ljava/lang/Boolean;->booleanValue()Z
  
-@@ -10497,7 +10554,7 @@
+@@ -10612,7 +10670,7 @@
  
      return p0
  
@@ -154,5 +151,4 @@ index b3b5a4dd..57833ded 100644
  
      new-instance v0, Landroid/app/ApplicationPackageManager$HasSystemFeatureQuery;
 -- 
-2.51.1
-
+2.53.0

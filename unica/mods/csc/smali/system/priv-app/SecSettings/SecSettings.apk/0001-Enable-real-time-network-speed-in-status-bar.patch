@@ -4,15 +4,15 @@ Date: Fri, 17 Oct 2025 12:02:03 +0200
 Subject: [PATCH] Enable real time network speed in status bar
 
 ---
- .../ConfigureNotificationMoreSettings$1.smali | 14 ++--------
- .../StatusBarNetworkSpeedController.smali     | 14 ++--------
- .../provider/items/NotificationsItem.smali    | 26 +++----------------
+ .../notification/ConfigureNotificationMoreSettings$1.smali | 14 ++--------
+ .../notification/StatusBarNetworkSpeedController.smali     | 14 ++--------
+ .../eternal/provider/items/NotificationsItem.smali          | 26 +++----------------
  3 files changed, 8 insertions(+), 46 deletions(-)
 
-diff --git a/smali_classes3/com/samsung/android/settings/notification/ConfigureNotificationMoreSettings$1.smali b/smali_classes3/com/samsung/android/settings/notification/ConfigureNotificationMoreSettings$1.smali
+diff --git a/smali_classes5/com/samsung/android/settings/notification/ConfigureNotificationMoreSettings$1.smali b/smali_classes5/com/samsung/android/settings/notification/ConfigureNotificationMoreSettings$1.smali
 index 321d0ed7a..0d7fdfb3f 100644
---- a/smali_classes3/com/samsung/android/settings/notification/ConfigureNotificationMoreSettings$1.smali
-+++ b/smali_classes3/com/samsung/android/settings/notification/ConfigureNotificationMoreSettings$1.smali
+--- a/smali_classes5/com/samsung/android/settings/notification/ConfigureNotificationMoreSettings$1.smali
++++ b/smali_classes5/com/samsung/android/settings/notification/ConfigureNotificationMoreSettings$1.smali
 @@ -5,7 +5,7 @@
  
  # virtual methods
@@ -41,10 +41,11 @@ index 321d0ed7a..0d7fdfb3f 100644
  
      if-nez v0, :cond_2
  
-diff --git a/smali_classes3/com/samsung/android/settings/notification/StatusBarNetworkSpeedController.smali b/smali_classes3/com/samsung/android/settings/notification/StatusBarNetworkSpeedController.smali
+
+diff --git a/smali_classes5/com/samsung/android/settings/notification/StatusBarNetworkSpeedController.smali b/smali_classes5/com/samsung/android/settings/notification/StatusBarNetworkSpeedController.smali
 index ad56af565..e00810787 100644
---- a/smali_classes3/com/samsung/android/settings/notification/StatusBarNetworkSpeedController.smali
-+++ b/smali_classes3/com/samsung/android/settings/notification/StatusBarNetworkSpeedController.smali
+--- a/smali_classes5/com/samsung/android/settings/notification/StatusBarNetworkSpeedController.smali
++++ b/smali_classes5/com/samsung/android/settings/notification/StatusBarNetworkSpeedController.smali
 @@ -22,19 +22,9 @@
  
  # direct methods
@@ -67,14 +68,15 @@ index ad56af565..e00810787 100644
  
      sput-boolean v0, Lcom/samsung/android/settings/notification/StatusBarNetworkSpeedController;->SUPPORT_NETWORK_SPEED:Z
  
-diff --git a/smali_classes4/com/samsung/android/settings/eternal/provider/items/NotificationsItem.smali b/smali_classes4/com/samsung/android/settings/eternal/provider/items/NotificationsItem.smali
+
+diff --git a/smali_classes5/com/samsung/android/settings/eternal/provider/items/NotificationsItem.smali b/smali_classes5/com/samsung/android/settings/eternal/provider/items/NotificationsItem.smali
 index 73fc97737..36d4d6af9 100644
---- a/smali_classes4/com/samsung/android/settings/eternal/provider/items/NotificationsItem.smali
-+++ b/smali_classes4/com/samsung/android/settings/eternal/provider/items/NotificationsItem.smali
-@@ -1395,22 +1395,14 @@
-     return-object v14
+--- a/smali_classes5/com/samsung/android/settings/eternal/provider/items/NotificationsItem.smali
++++ b/smali_classes5/com/samsung/android/settings/eternal/provider/items/NotificationsItem.smali
+@@ -509,22 +509,14 @@
  
-     :pswitch_17
+     if-eqz v2, :cond_0
+ 
 -    invoke-static {}, Lcom/samsung/android/feature/SemCscFeature;->getInstance()Lcom/samsung/android/feature/SemCscFeature;
 -
 -    move-result-object v0
@@ -88,7 +90,7 @@ index 73fc97737..36d4d6af9 100644
 -    move-result v0
 +    const/4 v0, 0x1
  
-     if-eqz v0, :cond_1d
+     if-eqz v0, :cond_1f
  
      const-string v0, "network_speed"
  
@@ -97,25 +99,25 @@ index 73fc97737..36d4d6af9 100644
      invoke-static {v15, v0, v3}, Landroid/provider/Settings$System;->getInt(Landroid/content/ContentResolver;Ljava/lang/String;I)I
  
      move-result v0
-@@ -2647,17 +2639,7 @@
-     goto/16 :goto_3
+@@ -2054,17 +2046,7 @@
  
-     :pswitch_c
+     if-eqz v0, :cond_d
+ 
 -    invoke-static {}, Lcom/samsung/android/feature/SemCscFeature;->getInstance()Lcom/samsung/android/feature/SemCscFeature;
 -
 -    move-result-object v0
 -
--    const-string v1, "CscFeature_Common_SupportZProjectFunctionInGlobal"
+-    const-string v2, "CscFeature_Common_SupportZProjectFunctionInGlobal"
 -
 -    const/4 v3, 0x0
 -
--    invoke-virtual {v0, v1, v3}, Lcom/samsung/android/feature/SemCscFeature;->getBoolean(Ljava/lang/String;Z)Z
+-    invoke-virtual {v0, v2, v3}, Lcom/samsung/android/feature/SemCscFeature;->getBoolean(Ljava/lang/String;Z)Z
 -
 -    move-result v0
 +    const/4 v0, 0x1
  
-     if-eqz v0, :cond_2
+     if-eqz v0, :cond_4
  
+
 -- 
 2.51.1
-

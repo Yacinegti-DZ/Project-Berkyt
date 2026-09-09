@@ -1,17 +1,17 @@
-From ac0f6eee59ec999f7eb5c8fe30fdef30f18c5583 Mon Sep 17 00:00:00 2001
-From: Salvo Giangreco <giangrecosalvo9@gmail.com>
-Date: Fri, 24 Oct 2025 14:45:06 +0200
-Subject: [PATCH] Allow app downgrade
+From 4d87df0f8d98bb7dfd3a78688d31bdb689baa8b0 Mon Sep 17 00:00:00 2001
+From: Devcore94 <devcore94@users.noreply.github.com>
+Date: Sat, 22 Aug 2026 07:52:44 +0200
+Subject: [PATCH] Allow app downgrade on QPR2
 
 ---
  .../server/pm/PackageManagerService.smali        | 16 ++++++++++++++++
  1 file changed, 16 insertions(+)
 
 diff --git a/smali_classes2/com/android/server/pm/PackageManagerService.smali b/smali_classes2/com/android/server/pm/PackageManagerService.smali
-index 773266ffc..eb0880764 100644
+index 36838d5d..80a8d00b 100644
 --- a/smali_classes2/com/android/server/pm/PackageManagerService.smali
 +++ b/smali_classes2/com/android/server/pm/PackageManagerService.smali
-@@ -22001,6 +22001,22 @@
+@@ -22738,6 +22738,22 @@
  
      if-nez v0, :cond_b
  
@@ -23,17 +23,16 @@ index 773266ffc..eb0880764 100644
 +
 +    const-string v3, "unica_allow_downgrade"
 +
-+    const/4 v4, 0x0
++    const/4 v8, 0x0
 +
-+    invoke-static {v0, v3, v4}, Landroid/provider/Settings$System;->getInt(Landroid/content/ContentResolver;Ljava/lang/String;I)I
++    invoke-static {v0, v3, v8}, Landroid/provider/Settings$System;->getInt(Landroid/content/ContentResolver;Ljava/lang/String;I)I
 +
 +    move-result v0
 +
 +    if-nez v0, :cond_b
 +
      :try_start_3
-     invoke-interface {v10}, Lcom/android/server/pm/pkg/AndroidPackage;->getLongVersionCode()J
+     invoke-interface {v14}, Lcom/android/server/pm/pkg/AndroidPackage;->getLongVersionCode()J
  
 -- 
-2.51.1
-
+2.53.0

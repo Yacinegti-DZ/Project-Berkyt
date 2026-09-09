@@ -1,0 +1,24 @@
+From 6369e9d298215ad9670ebe25dac458942ea318cd Mon Sep 17 00:00:00 2001
+From: Devcore94 <devcore94@users.noreply.github.com>
+Date: Sat, 22 Aug 2026 06:08:23 +0200
+Subject: [PATCH] Register UN1CA Settings search indexes
+
+---
+ .../SearchFeatureProviderImpl$$ExternalSyntheticLambda0.smali   | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/smali_classes2/com/android/settings/search/SearchFeatureProviderImpl$$ExternalSyntheticLambda0.smali b/smali_classes2/com/android/settings/search/SearchFeatureProviderImpl$$ExternalSyntheticLambda0.smali
+index 3da6359..1c5470c 100644
+--- a/smali_classes2/com/android/settings/search/SearchFeatureProviderImpl$$ExternalSyntheticLambda0.smali
++++ b/smali_classes2/com/android/settings/search/SearchFeatureProviderImpl$$ExternalSyntheticLambda0.smali
+@@ -2246,5 +2246,7 @@
+     goto :goto_1
+ 
+     :cond_1
++    invoke-static {p0}, Lio/mesalabs/unica/search/UnicaSearchIndexableResources;->addUnicaIndexes(Lcom/android/settingslib/search/SearchIndexableResourcesBase;)V
++
+     return-object p0
+ .end method
+-- 
+2.53.0
+
