@@ -63,7 +63,7 @@ DECODE_APK()
 }
 
 # GET_GALAXY_STORE_DOWNLOAD_URL "<package name/id>"
-# Returns a URL to download the desired app from Samsung servers.
+# Returns a URL to download the desidered app from Samsung servers.
 GET_GALAXY_STORE_DOWNLOAD_URL()
 {
     _CHECK_NON_EMPTY_PARAM "PACKAGE" "$1" || return 1
@@ -74,10 +74,10 @@ GET_GALAXY_STORE_DOWNLOAD_URL()
     local ONEUI
     local PROTOCOL
 
+    # Galaxy S26 Ultra EUR_OPENX
     # Galaxy S25 Ultra EUR_OPENX
     # Galaxy S22 Ultra GBL_OPENX
-    # Galaxy S25 Ultra KOR_SINGLEX
-    DEVICES=("SM-S938B" "SM-S901E" "SM-S938N")
+    DEVICES=("SM-S948B" "SM-S938B" "SM-S901E")
 
     OS="$(GET_PROP "system" "ro.build.version.sdk")"
     ONEUI="$(GET_PROP "system" "ro.build.version.oneui")"
@@ -155,7 +155,7 @@ GET_FLOATING_FEATURE_CONFIG()
 }
 
 # HEX_PATCH "<file>" "<old pattern>" "<new pattern>"
-# Applies the supplied hex patch to the desired file.
+# Applies the supplied hex patch to the desidered file.
 HEX_PATCH()
 {
     _CHECK_NON_EMPTY_PARAM "FILE" "$1" || return 1
@@ -195,7 +195,7 @@ HEX_PATCH()
 }
 
 # SET_FLOATING_FEATURE_CONFIG "<config>" "<value>"
-# Sets the supplied config to the desired value.
+# Sets the supplied config to the desidered value.
 # "-d" or "--delete" can be passed as value to delete the config.
 SET_FLOATING_FEATURE_CONFIG()
 {

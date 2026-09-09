@@ -168,31 +168,31 @@ fi
 #
 #   TARGET_SYSTEM_PARTITION_SIZE
 #     Integer containing the size in bytes of the target device system partition size.
-#     Unused if TARGET_USE_DYNAMIC_PARTITIONS is set to true.
+#     Unused if TARGET_USE_DYNAMIC_PARTITIONS is set to false.
 #
 #   TARGET_VENDOR_PARTITION_SIZE
 #     Integer containing the size in bytes of the target device vendor partition size.
-#     Unused if TARGET_USE_DYNAMIC_PARTITIONS is set to true.
+#     Unused if TARGET_USE_DYNAMIC_PARTITIONS is set to false.
 #
 #   TARGET_PRODUCT_PARTITION_SIZE
 #     Integer containing the size in bytes of the target device product partition size.
-#     Unused if TARGET_USE_DYNAMIC_PARTITIONS is set to true.
+#     Unused if TARGET_USE_DYNAMIC_PARTITIONS is set to false.
 #
 #   TARGET_ODM_PARTITION_SIZE
 #     Integer containing the size in bytes of the target device odm partition size.
-#     Unused if TARGET_USE_DYNAMIC_PARTITIONS is set to true.
+#     Unused if TARGET_USE_DYNAMIC_PARTITIONS is set to false.
 #
 #   TARGET_VENDOR_DLKM_PARTITION_SIZE
 #     Integer containing the size in bytes of the target device vendor_dlkm partition size.
-#     Unused if TARGET_USE_DYNAMIC_PARTITIONS is set to true.
+#     Unused if TARGET_USE_DYNAMIC_PARTITIONS is set to false.
 #
 #   TARGET_ODM_DLKM_PARTITION_SIZE
 #     Integer containing the size in bytes of the target device odm_dlkm partition size.
-#     Unused if TARGET_USE_DYNAMIC_PARTITIONS is set to true.
+#     Unused if TARGET_USE_DYNAMIC_PARTITIONS is set to false.
 #
 #   TARGET_SYSTEM_DLKM_PARTITION_SIZE
 #     Integer containing the size in bytes of the target device system_dlkm partition size.
-#     Unused if TARGET_USE_DYNAMIC_PARTITIONS is set to true.
+#     Unused if TARGET_USE_DYNAMIC_PARTITIONS is set to false.
 #
 #   TARGET_OS_SINGLE_SYSTEM_IMAGE
 #     String containing the target device SSI, it must match the `ro.build.product` prop.
@@ -227,23 +227,11 @@ fi
 #       - `SEC_AUDIO_SUPPORT_DUAL_SPEAKER` in the `com.samsung.android.audio.Rune` class inside `framework.jar` is set to true
 #       - "SEC_FLOATING_FEATURE_AUDIO_SUPPORT_DUAL_SPEAKER" in floating_feature.xml is set to "TRUE"
 #
-#   [SOURCE/TARGET]_AUDIO_SUPPORT_VIRTUAL_VIBRATION_SOUND
+#   [SOURCE/TARGET]_AUDIO_SUPPORT_VIRTUAL_VIBRATION
 #     Boolean which describes whether the device supports the "Vibration sound for incoming calls" feature.
 #     It can be checked in the following ways:
 #       - `SEC_AUDIO_SUPPORT_VIRTUAL_VIBRATION_SOUND` in the `com.samsung.android.audio.Rune` class inside `framework.jar` is set to true
 #       - `SUPPORT_VIRTUAL_VIBRATION_SOUND` in the `com.samsung.android.vibrator.VibRune` class inside `framework.jar` is set to true
-#
-#   [SOURCE/TARGET]_BLUETOOTH_SUPPORT_A2DPSINK_PROFILE
-#     Boolean which describes whether the device supports Bluetooth A2DP Sink mode.
-#
-#   [SOURCE/TARGET]_BLUETOOTH_SUPPORT_A2DP_SBM
-#     Boolean which describes whether the device supports Bluetooth A2DP Smart Buffer Management.
-#
-#   [SOURCE/TARGET]_BLUETOOTH_SUPPORT_HEAD_SAR_BACKOFF
-#     Boolean which describes whether the device supports Bluetooth head SAR backoff.
-#
-#   [SOURCE/TARGET]_BLUETOOTH_SUPPORT_XLNA_CONTROL
-#     Boolean which describes whether the device supports controlling the Bluetooth LNA via the accelerometer sensor.
 #
 #   [SOURCE/TARGET]_CAMERA_SUPPORT_CAMERAX_EXTENSION
 #     Boolean which describes whether the device supports CameraX Extensions API.
@@ -418,12 +406,6 @@ fi
 #   [SOURCE/TARGET]_WLAN_SUPPORT_MBO
 #     Boolean which describes whether the device supports the Wi-Fi Agile Multiband standard.
 #
-#   [SOURCE/TARGET]_WLAN_SUPPORT_MIMO
-#     Boolean which describes whether the device supports the MIMO standard.
-#
-#   [SOURCE/TARGET]_WLAN_SUPPORT_MOBILEAP_11AX
-#     Boolean which describes whether the device supports Wi-Fi 6 Mobile Hotspot.
-#
 #   [SOURCE/TARGET]_WLAN_SUPPORT_MOBILEAP_5G_BASEDON_COUNTRY
 #     Boolean which describes whether the device should enable the 5Ghz Mobile Hotspot band depending the country code.
 #
@@ -487,6 +469,7 @@ fi
     GET_BUILD_VAR "TARGET_PLATFORM_SDK_VERSION"
     GET_BUILD_VAR "TARGET_PRODUCT_SHIPPING_API_LEVEL"
     GET_BUILD_VAR "TARGET_BOARD_API_LEVEL"
+    GET_BUILD_VAR "TARGET_VNDK_API_LEVEL" "$TARGET_BOARD_API_LEVEL"
     GET_BUILD_VAR "TARGET_DISABLE_AVB_SIGNING" "false"
     GET_BUILD_VAR "TARGET_INCLUDE_PATCHED_VBMETA" "false"
     GET_BUILD_VAR "TARGET_KEEP_ORIGINAL_SIGN" "false"
@@ -519,16 +502,8 @@ fi
     GET_BUILD_VAR "TARGET_AUDIO_SUPPORT_ACH_RINGTONE"
     GET_BUILD_VAR "SOURCE_AUDIO_SUPPORT_DUAL_SPEAKER"
     GET_BUILD_VAR "TARGET_AUDIO_SUPPORT_DUAL_SPEAKER"
-    GET_BUILD_VAR "SOURCE_AUDIO_SUPPORT_VIRTUAL_VIBRATION_SOUND"
-    GET_BUILD_VAR "TARGET_AUDIO_SUPPORT_VIRTUAL_VIBRATION_SOUND"
-    GET_BUILD_VAR "SOURCE_BLUETOOTH_SUPPORT_A2DPSINK_PROFILE"
-    GET_BUILD_VAR "TARGET_BLUETOOTH_SUPPORT_A2DPSINK_PROFILE"
-    GET_BUILD_VAR "SOURCE_BLUETOOTH_SUPPORT_A2DP_SBM"
-    GET_BUILD_VAR "TARGET_BLUETOOTH_SUPPORT_A2DP_SBM"
-    GET_BUILD_VAR "SOURCE_BLUETOOTH_SUPPORT_HEAD_SAR_BACKOFF"
-    GET_BUILD_VAR "TARGET_BLUETOOTH_SUPPORT_HEAD_SAR_BACKOFF"
-    GET_BUILD_VAR "SOURCE_BLUETOOTH_SUPPORT_XLNA_CONTROL"
-    GET_BUILD_VAR "TARGET_BLUETOOTH_SUPPORT_XLNA_CONTROL"
+    GET_BUILD_VAR "SOURCE_AUDIO_SUPPORT_VIRTUAL_VIBRATION"
+    GET_BUILD_VAR "TARGET_AUDIO_SUPPORT_VIRTUAL_VIBRATION"
     GET_BUILD_VAR "SOURCE_CAMERA_SUPPORT_CAMERAX_EXTENSION"
     GET_BUILD_VAR "TARGET_CAMERA_SUPPORT_CAMERAX_EXTENSION"
     GET_BUILD_VAR "SOURCE_CAMERA_SUPPORT_CUTOUT_PROTECTION"
@@ -601,10 +576,6 @@ fi
     GET_BUILD_VAR "TARGET_WLAN_SUPPORT_LOWLATENCY"
     GET_BUILD_VAR "SOURCE_WLAN_SUPPORT_MBO"
     GET_BUILD_VAR "TARGET_WLAN_SUPPORT_MBO"
-    GET_BUILD_VAR "SOURCE_WLAN_SUPPORT_MIMO"
-    GET_BUILD_VAR "TARGET_WLAN_SUPPORT_MIMO"
-    GET_BUILD_VAR "SOURCE_WLAN_SUPPORT_MOBILEAP_11AX"
-    GET_BUILD_VAR "TARGET_WLAN_SUPPORT_MOBILEAP_11AX"
     GET_BUILD_VAR "SOURCE_WLAN_SUPPORT_MOBILEAP_5G_BASEDON_COUNTRY"
     GET_BUILD_VAR "TARGET_WLAN_SUPPORT_MOBILEAP_5G_BASEDON_COUNTRY"
     GET_BUILD_VAR "SOURCE_WLAN_SUPPORT_MOBILEAP_6G"

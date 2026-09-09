@@ -157,8 +157,67 @@ fi
 LOG "- Generating build_info.txt"
 GENERATE_BUILD_INFO
 
+CREATE_TARGET_FILES_ZIP()
+{
+    local list_file
+    local archiver_log
+
+    VALIDATE_TARGET_FILES_ZIP()
+    {
+        [ -s "$OUTPUT_FILE" ] || return 1
+
+        if command -v zip &> /dev/null; then
+            EVAL "zip -T \"$OUTPUT_FILE\"" && return 0
+        fi
+
+        if command -v 7z &> /dev/null; then
+            EVAL "7z t \"$OUTPUT_FILE\"" && return 0
+        fi
+
+        return 1
+    }
+
+    rm -f "$OUTPUT_FILE"
+    list_file="$(mktemp)" || return 1
+    archiver_log="$(mktemp)" || {
+        rm -f "$list_file"
+        return 1
+    }
+    EVAL "cd \"$TMP_DIR\" && find . -mindepth 1 -print | LC_ALL=C sort | sed 's#^./##' > \"$list_file\"" || {
+        rm -f "$list_file" "$archiver_log"
+        return 1
+    }
+
+    if command -v zip &> /dev/null; then
+        (cd "$TMP_DIR" && zip -q -X -3 -y "$OUTPUT_FILE" -@ < "$list_file") > "$archiver_log" 2>&1 || true
+        if VALIDATE_TARGET_FILES_ZIP; then
+            rm -f "$list_file" "$archiver_log"
+            return 0
+        fi
+
+        LOG "      ! zip validation failed, retrying with 7z"
+        [ -s "$archiver_log" ] && cat "$archiver_log" >&2
+        rm -f "$OUTPUT_FILE"
+    fi
+
+    if command -v 7z &> /dev/null; then
+        : > "$archiver_log"
+        (cd "$TMP_DIR" && 7z a -tzip -mx=3 -mmt=1 -mtc=off -mtm=off "$OUTPUT_FILE" @"$list_file") > "$archiver_log" 2>&1 || true
+        if VALIDATE_TARGET_FILES_ZIP; then
+            rm -f "$list_file" "$archiver_log"
+            return 0
+        fi
+
+        LOG "      ! 7z validation failed"
+        [ -s "$archiver_log" ] && cat "$archiver_log" >&2
+        rm -f "$OUTPUT_FILE"
+    fi
+
+    rm -f "$list_file" "$archiver_log"
+    return 1
+}
+
 LOG "- Creating zip"
-rm -f "$OUTPUT_FILE"
-EVAL "cd \"$TMP_DIR\" && 7z a -tzip -mx=3 -mmt=$(nproc) -mtc=off -mtm=off \"$OUTPUT_FILE\" -r *" || exit 1
+CREATE_TARGET_FILES_ZIP || exit 1
 
 exit 0

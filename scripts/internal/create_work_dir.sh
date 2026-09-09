@@ -10,7 +10,7 @@ TARGET_FIRMWARE_PATH="$(cut -d "/" -f 1 -s <<< "$TARGET_FIRMWARE")_$(cut -d "/" 
 
 COPY_SOURCE_FIRMWARE()
 {
-    local SOURCE_FOLDERS="product system"
+    local SOURCE_FOLDERS="odm product system"
     for f in $SOURCE_FOLDERS; do
         if [ -d "$FW_DIR/$SOURCE_FIRMWARE_PATH/$f" ]; then
             LOG "- Copying /$f from source firmware"
@@ -27,7 +27,7 @@ COPY_SOURCE_FIRMWARE()
                 LOG_STEP_OUT
             fi
         else
-            [ -d "$WORK_DIR/$f" ] && rm -rf "${WORK_DIR:?}/$f"
+            [ -d "$WORK_DIR/$f" ] && rm -rf "$WORK_DIR/$f"
             [ -f "$WORK_DIR/configs/file_context-$f" ] && rm -f "$WORK_DIR/configs/file_context-$f"
             [ -f "$WORK_DIR/configs/fs_config-$f" ] && rm -f "$WORK_DIR/configs/fs_config-$f"
         fi
@@ -64,7 +64,6 @@ COPY_SOURCE_FIRMWARE()
             sed "s/^\/system_ext/\/system\/system_ext/g" "$FW_DIR/$SOURCE_FIRMWARE_PATH/file_context-system_ext" >> "$WORK_DIR/configs/file_context-system"
             sed "s/^system_ext/system\/system_ext/g" "$FW_DIR/$SOURCE_FIRMWARE_PATH/fs_config-system_ext" >> "$WORK_DIR/configs/fs_config-system"
 
-            ADD_TO_WORK_DIR "b0sxxx" "system_ext" "etc/build_flags.json" 0 0 644 "u:object_r:system_file:s0" || exit 1
             DELETE_FROM_WORK_DIR "system" "system/system_ext/etc/NOTICE.xml.gz"
 
             LOG_STEP_OUT
@@ -85,8 +84,6 @@ COPY_SOURCE_FIRMWARE()
             grep -F "system/system_ext" "$FW_DIR/$SOURCE_FIRMWARE_PATH/fs_config-system" | sed "s/^system\///" > "$WORK_DIR/configs/fs_config-system_ext"
             sed -i "s/^system_ext /  /g" "$WORK_DIR/configs/fs_config-system_ext"
 
-            ADD_TO_WORK_DIR "b0qxxx" "system_ext" "etc/build_flags.json" 0 0 644 "u:object_r:system_file:s0" || exit 1
-            ADD_TO_WORK_DIR "b0qxxx" "system_ext" "etc/NOTICE.xml.gz" 0 0 644 "u:object_r:system_file:s0" || exit 1
 
             LOG_STEP_OUT
         else
@@ -110,7 +107,7 @@ COPY_SOURCE_FIRMWARE()
 
 COPY_TARGET_FIRMWARE()
 {
-    local TARGET_FOLDERS="odm odm_dlkm system_dlkm vendor vendor_dlkm"
+    local TARGET_FOLDERS="odm_dlkm system_dlkm vendor vendor_dlkm"
     for f in $TARGET_FOLDERS; do
         if [ -d "$FW_DIR/$TARGET_FIRMWARE_PATH/$f" ]; then
             LOG "- Copying /$f from target firmware"
@@ -128,7 +125,7 @@ COPY_TARGET_FIRMWARE()
                 LOG_STEP_OUT
             fi
         else
-            [ -d "$WORK_DIR/$f" ] && rm -rf "${WORK_DIR:?}/$f"
+            [ -d "$WORK_DIR/$f" ] && rm -rf "$WORK_DIR/$f"
             [ -f "$WORK_DIR/configs/file_context-$f" ] && rm -f "$WORK_DIR/configs/file_context-$f"
             [ -f "$WORK_DIR/configs/fs_config-$f" ] && rm -f "$WORK_DIR/configs/fs_config-$f"
         fi

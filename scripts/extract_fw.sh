@@ -228,7 +228,7 @@ STORE_KERNEL_IMAGE_METADATA()
     local FILE="$1"
 
     if [ ! -f "$FILE" ]; then
-        LOGE "File not found: ${FILE//$SRC_DIR\//}"
+        LOGE "File not found: ${TAR//$SRC_DIR\//}"
         exit 1
     fi
 
@@ -244,7 +244,7 @@ STORE_KERNEL_IMAGE_METADATA()
             EVAL "unpack_bootimg --boot_img \"$FW_DIR/${MODEL}_${CSC}/kernel/$f\" --out \"$TMP_DIR\""
             exit 1
         fi
-        rm -rf "${TMP_DIR:?}/"*
+        rm -rf "$TMP_DIR/"*
 
         while IFS= read -r l; do
             if [[ "$l" == *"command line args"* ]]; then
@@ -307,7 +307,7 @@ STORE_OS_PARTITION_METADATA()
     local FILE="$1"
 
     if [ ! -f "$FILE" ]; then
-        LOGE "File not found: ${FILE//$SRC_DIR\//}"
+        LOGE "File not found: ${TAR//$SRC_DIR\//}"
         exit 1
     fi
 
