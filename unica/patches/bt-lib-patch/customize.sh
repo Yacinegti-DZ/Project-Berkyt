@@ -32,33 +32,7 @@ if [ ! -f "$WORK_DIR/system/system/lib64/libbluetooth_jni.so" ]; then
     LOG_STEP_OUT
 fi
 
-echo "===== BLUETOOTH DEBUG ====="
-echo "File:"
-ls -l "$WORK_DIR/system/system/lib64/libbluetooth_jni.so"
-echo "SHA256:"
-sha256sum "$WORK_DIR/system/system/lib64/libbluetooth_jni.so"
 
-echo "Searching known signatures:"
-for sig in \
-    "39d9199428518152" \
-    "2897773948050037" \
-    "183a009048050037" \
-    "88f6713948050037" \
-    "2897663948050037" \
-    "6872743908530037" \
-    "76743948050037330080" \
-    "97753948050037360080" \
-    "97773948050037360080" \
-    "3a009048050037330080" \
-    "f6713948050037330080" \
-    "f6733948050037330080" \
-    "88d6743948050037"
-do
-    if xxd -p -c 0 "$WORK_DIR/system/system/lib64/libbluetooth_jni.so" | grep -q "$sig"; then
-        echo "[MATCH] $sig"
-    fi
-done
-echo "==========================="
 # Disable VaultKeeper support
 # Before: [tbnz w8, #0, #0xXXXXXX]
 # After: [b #0xXXXXXX]
