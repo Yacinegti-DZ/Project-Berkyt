@@ -1,22 +1,6 @@
-
-
 #!/usr/bin/env bash
 # Copyright (c) 2025 Salvo Giangreco
 # SPDX-License-Identifier: GPL-3.0-or-later
-
-#dex limit 
-if [[ "$1" == *"framework.jar"* ]] || [[ "$2" == *"framework.jar"* ]] || [[ "$3" == *"framework.jar"* ]]; then
-    FW_DIR="out/target/o1s/apktool/system/framework/framework.jar"
-    if [ -d "$FW_DIR/smali_classes3/android/samsung" ]; then
-        echo "  [!] Splitting framework.jar smali folders to prevent 64K MultiDex limit..."
-        mkdir -p "$FW_DIR/smali_classes8/android"
-        for folder in media net opengl samsung sec; do
-            if [ -d "$FW_DIR/smali_classes3/android/$folder" ]; then
-                mv "$FW_DIR/smali_classes3/android/$folder" "$FW_DIR/smali_classes8/android/"
-            fi
-        done
-    fi
-fi
 
 # [
 source "$SRC_DIR/scripts/utils/build_utils.sh" || exit 1
@@ -46,6 +30,19 @@ BUILD()
     fi
 
     LOG "- Building ${INPUT_FILE//$WORK_DIR/}"
+
+    # Split framework.jar smali folders to prevent 64K MultiDex limit
+    if [[ "$INPUT_FILE" == *"framework.jar" ]]; then
+        if [ -d "$OUTPUT_PATH/smali_classes3/android/samsung" ]; then
+            echo "  [!] Splitting framework.jar smali folders to prevent 64K MultiDex limit..."
+            mkdir -p "$OUTPUT_PATH/smali_classes8/android"
+            for folder in media net opengl samsung sec; do
+                if [ -d "$OUTPUT_PATH/smali_classes3/android/$folder" ]; then
+                    mv "$OUTPUT_PATH/smali_classes3/android/$folder" "$OUTPUT_PATH/smali_classes8/android/"
+                fi
+            done
+        fi
+    fi
 
     # Copy original META-INF
     mkdir -p "$OUTPUT_PATH/build/apk"
